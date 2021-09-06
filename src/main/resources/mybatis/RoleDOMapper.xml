@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yefei.ework.dao.RoleDOMapper">
+    <resultMap id="BaseResultMap" type="com.yefei.ework.entity.DO.RoleDO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modify" property="gmtModify" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , code, gmt_create, gmt_modify
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByUserId" resultMap="BaseResultMap">
+        select r.*
+        from user_role ur
+                 left join role r on r.id = ur.role_id
+        where ur.user_id = #{userId}
+    </select>
+
+    <select id="selectByCode" resultType="com.yefei.ework.entity.DO.RoleDO">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where code = #{roleCode,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from role
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.yefei.ework.entity.DO.RoleDO">
+        insert into role (id, code, gmt_create,
+                          gmt_modify)
+        values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, now(), now())
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yefei.ework.entity.DO.RoleDO">
+        update role
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+        and gmt_modify = now()
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yefei.ework.entity.DO.RoleDO">
+        update role
+        set code = #{code,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+          and gmt_modify = now()
+    </update>
+</mapper>

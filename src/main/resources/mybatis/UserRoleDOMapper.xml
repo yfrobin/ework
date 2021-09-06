@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yefei.ework.dao.UserRoleDOMapper">
+    <resultMap id="BaseResultMap" type="com.yefei.ework.entity.DO.UserRoleDO">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modify" property="gmtModify" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , user_id, role_id, gmt_create, gmt_modify
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from user_role
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from user_role
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.yefei.ework.entity.DO.UserRoleDO">
+        insert into user_role (id, user_id, role_id,
+                               gmt_create, gmt_modify)
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR},
+                now(), now())
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yefei.ework.entity.DO.UserRoleDO">
+        update user_role
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+        and gmt_modify = now()
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yefei.ework.entity.DO.UserRoleDO">
+        update user_role
+        set user_id = #{userId,jdbcType=VARCHAR},
+            role_id = #{roleId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+          and gmt_modify = now()
+    </update>
+</mapper>
