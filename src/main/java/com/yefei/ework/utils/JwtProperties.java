@@ -12,9 +12,9 @@ public class JwtProperties {
     private String apiSecretKey = "JWT_SECRET_KEY";
 
     /**
-     * 过期时间-默认半个小时
+     * 过期时间-单位秒
      */
-    private Long expirationTime = 60L;
+    private Long expirationTime = 1800L;
 
     /**
      * 默认存放token的请求头
